@@ -1,7 +1,10 @@
+import os
+
 import numpy
 from keras.layers import Dense
 from keras.models import Sequential
 from matplotlib import pyplot
+from tensorflow.python.keras.models import load_model
 
 TRAINING_PERCENTAGE = 0.7
 TESTING_PERCENTAGE = 1 - TRAINING_PERCENTAGE
@@ -10,6 +13,7 @@ LENGTH_DATA_SET = 0
 numpy.random.seed(7)
 TRAINING_SET_LENGTH = 0
 TESTING_SET_LENGTH = 0
+RECURRENT_NEURAL_NETWORK_MODEL = 'rnn_model.h5'
 
 
 def training_testing_buckets(raw_data, training_percentage):
@@ -47,6 +51,7 @@ def build_recurrent_neural_network(train_actual, train_predict):
     recurrent_neural_network.fit(numpy.array(train_actual), numpy.array(train_predict), epochs=50, batch_size=2,
                                  verbose=2)
 
+    recurrent_neural_network.save(RECURRENT_NEURAL_NETWORK_MODEL)
     return recurrent_neural_network
 
 
@@ -101,12 +106,19 @@ def rnn_model(raw_data, currency):
     global LENGTH_DATA_SET
     LENGTH_DATA_SET = len(raw_data)
 
+    global RECURRENT_NEURAL_NETWORK_MODEL
+    RECURRENT_NEURAL_NETWORK_MODEL = 'rnn_model_{currency}.h5'.format(currency=currency.lower())
+
     print('Splitting training and testing set...')
     training_set, testing_set = training_testing_buckets(raw_data, TRAINING_PERCENTAGE)
     train_actual, train_predict, test_actual, test_predict = modify_data_set_rnn(training_set, testing_set)
 
-    print('Building and training model...')
-    rnn = build_recurrent_neural_network(train_actual, train_predict)
+    if os.path.isfile(RECURRENT_NEURAL_NETWORK_MODEL):
+        print('Loading model...')
+        rnn = load_model(RECURRENT_NEURAL_NETWORK_MODEL)
+    else:
+        print('Building and training model...')
+        rnn = build_recurrent_neural_network(train_actual, train_predict)
 
     print('Predicting...')
     training_predict, testing_predict = predict_rnn(rnn, train_actual, test_actual)
