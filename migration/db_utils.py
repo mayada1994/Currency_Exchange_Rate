@@ -1,6 +1,7 @@
-import sqlite3
 import os
-from flask import Flask
+import sqlite3
+
+from flask import Flask, g
 
 # config
 DATABASE = '/tmp/currency_exchange_rate.db'
@@ -18,6 +19,18 @@ def connect_db():
     conn = sqlite3.connect(app.config['DATABASE'])
     conn.row_factory = sqlite3.Row
     return conn
+
+
+def get_db():
+    if not hasattr(g, 'link_db'):
+        g.link_db = connect_db()
+    return g.link_db
+
+
+@app.teardown_appcontext
+def close_db(error):
+    if hasattr(g, 'link_db'):
+        g.link_db.close()
 
 
 def create_db():
