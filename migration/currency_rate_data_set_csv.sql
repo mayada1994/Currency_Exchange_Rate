@@ -1,8 +1,8 @@
 CREATE TABLE currency_rates (
   exchange_date TEXT,
   currency TEXT,
-  currency_unit TEXT,
-  rate TEXT
+  currency_unit INTEGER,
+  rate REAL
 );
 INSERT INTO currency_rates(exchange_date, currency, currency_unit, rate) VALUES ('04.05.2001', 'EUR', '100', '482.1598');
 INSERT INTO currency_rates(exchange_date, currency, currency_unit, rate) VALUES ('05.05.2001', 'EUR', '100', '484.1005');
