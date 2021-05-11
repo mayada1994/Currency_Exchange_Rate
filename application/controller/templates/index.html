@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Currency rate</title>
+</head>
+<body>
+
+<div class="header">
+    <h1>Select currency and date for forecast currency rate</h1>
+
+    <form method="post" action="/rate">
+        <select name="currency">
+            {% for c in currency %}
+            <option value="{{ c[0] }}" SELECTED>{{ c[0] }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="date" id="start" name="trip-start"/>
+
+    </form>
+
+</div>
+</body>
+</html>

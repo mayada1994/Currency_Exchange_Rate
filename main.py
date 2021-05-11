@@ -2,6 +2,7 @@ import warnings
 
 from pandas import read_csv
 
+from application.controller.currency_rate_controller import app
 from currency_rate import CurrencyRate
 from rnn import *
 
@@ -40,3 +41,4 @@ def main():
 if __name__ == '__main__':
     warnings.filterwarnings("ignore")
     main()
+    app.run(debug=True, port=8080)
