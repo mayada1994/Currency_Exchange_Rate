@@ -11,7 +11,7 @@
 
     <form method="post" action="/rate">
         <select name="currency">
-            {% for c in currency %}
+            {% for c in currency_value %}
             <option value="{{ c[0] }}" SELECTED>{{ c[0] }}</option>
             {% endfor %}
         </select>
@@ -21,13 +21,6 @@
         <button type="submit">Generate</button>
     </form>
 </div>
-
-<div>{{ date }}</div>
-<div>{{ actualRate }}</div>
-<div>{{ predictedRate }}</div>
-<div>{{ error }}</div>
-<div>{{ currency }}</div>
-<img src="{{url}}" alt="Chart" height="500px" width="auto">
 
 </body>
 </html>

@@ -66,7 +66,7 @@ def predict_rnn(recurrent_neural_network, train_actual, test_actual):
     print('\t The prediction for the next day:', testing_predict[-1])
 
     global prediction_result
-    prediction_result.predicted_rate = testing_predict[-1]
+    prediction_result.predicted_rate = str(testing_predict[-1][0])
 
     return training_predict, testing_predict
 

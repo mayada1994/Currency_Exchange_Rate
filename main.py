@@ -27,7 +27,7 @@ def get_raw_data(data_set_frame, currency):
         row_data.append(CurrencyRate(date=row[0], currency=currency, rate=row[2] / row[1]))
     return row_data
 
-
+#used for generating recurrent neural network (rnn)
 def main():
     data_set_frame = read_csv('currency_rate_data_set.csv', header=0,
                               index_col=0, squeeze=True)
@@ -35,10 +35,10 @@ def main():
     currency = input('Enter any one of [' + str(currencies)[1:-1] + '] currencies: \n').strip()
 
     raw_data = get_raw_data(data_set_frame, currency)
-    rnn_model(raw_data, currency)
+    rnn_model(raw_data, currency, raw_data[-1])
 
 
 if __name__ == '__main__':
     warnings.filterwarnings("ignore")
-    main()
+    # main()
     app.run(debug=True, port=8080)

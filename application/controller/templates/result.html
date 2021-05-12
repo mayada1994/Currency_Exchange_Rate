@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Currency rate</title>
+</head>
+<body>
+
+<a href="{{ url_for('index') }}">Back</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>Currency</th>
+        <th>Selected exchange date</th>
+        <th>Actual exchange rate</th>
+        <th>Predicted exchange rate</th>
+        <th>Mean Square Error</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>{{ currency }}</td>
+        <td>{{ date }}</td>
+        <td>{{ actualRate }}</td>
+        <td>{{ predictedRate }}</td>
+        <td>{{ error }}</td>
+    </tr>
+    </tbody>
+</table>
+
+<img src="{{url}}" alt="Chart" height="500px" width="auto"/>
+
+</body>
+</html>
