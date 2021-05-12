@@ -16,10 +16,18 @@
             {% endfor %}
         </select>
 
-        <input type="date" id="start" name="trip-start"/>
+        <input type="date" id="start" name="date" min="2001-06-23" max="2021-05-04" required/>
 
+        <button type="submit">Generate</button>
     </form>
-
 </div>
+
+<div>{{ date }}</div>
+<div>{{ actualRate }}</div>
+<div>{{ predictedRate }}</div>
+<div>{{ error }}</div>
+<div>{{ currency }}</div>
+<img src="{{url}}" alt="Chart" height="500px" width="auto">
+
 </body>
 </html>

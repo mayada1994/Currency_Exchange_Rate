@@ -6,6 +6,8 @@ from keras.models import Sequential
 from matplotlib import pyplot
 from tensorflow.python.keras.models import load_model
 
+from prediction_result import PredictionResult
+
 TRAINING_PERCENTAGE = 0.7
 TESTING_PERCENTAGE = 1 - TRAINING_PERCENTAGE
 NUMBER_OF_PREVIOUS_DATA_POINTS = 3
@@ -15,6 +17,7 @@ TRAINING_SET_LENGTH = 0
 TESTING_SET_LENGTH = 0
 RECURRENT_NEURAL_NETWORK_MODEL = 'rnn_model.h5'
 
+prediction_result = PredictionResult("", 0.0, 0.0, 0.0, "", "")
 
 def training_testing_buckets(raw_data, training_percentage):
     global TRAINING_SET_LENGTH, TESTING_SET_LENGTH
@@ -61,12 +64,19 @@ def predict_rnn(recurrent_neural_network, train_actual, test_actual):
 
     print(training_predict, testing_predict)
     print('\t The prediction for the next day:', testing_predict[-1])
+
+    global prediction_result
+    prediction_result.predicted_rate = testing_predict[-1]
+
     return training_predict, testing_predict
 
 
 def evaluate_performance_rnn(recurrent_neural_network, test_actual, test_predict):
     mse_testing = recurrent_neural_network.evaluate(numpy.array(test_actual), numpy.array(test_predict), verbose=0)
     print('\t Testing Mean Square Error:', mse_testing)
+
+    global prediction_result
+    prediction_result.error = mse_testing
 
 
 def plot_rnn(currency, raw_data, training_predict, testing_predict, file_name):
@@ -93,12 +103,21 @@ def plot_rnn(currency, raw_data, training_predict, testing_predict, file_name):
 
     pyplot.legend()
     # pyplot.show()
-    pyplot.savefig(file_name)
+    pyplot.savefig("application/controller/static/" + file_name)
+
+    global prediction_result
+    prediction_result.url_to_graph = "/static/" + file_name
+
     pyplot.clf()
 
 
-def rnn_model(raw_data, currency):
+def rnn_model(raw_data, currency, currency_rate):
     print('\nNeural Network Model')
+
+    global prediction_result
+    prediction_result.date = currency_rate.Date
+    prediction_result.currency = currency_rate.Currency
+    prediction_result.actual_rate = currency_rate.Rate
 
     print('Loading the data set...')
     raw_data = [currency_rate.Rate for currency_rate in raw_data]
@@ -127,7 +146,7 @@ def rnn_model(raw_data, currency):
     evaluate_performance_rnn(rnn, test_actual, test_predict)
 
     print('Plotting the graph...')
-    plot_rnn(currency, raw_data, training_predict, testing_predict, "testing_prediction_rnn.pdf")
+    plot_rnn(currency, raw_data, training_predict, testing_predict, "testing_prediction_rnn.png")
 
     print('Done...')
-    return training_predict, testing_predict
+    return prediction_result
